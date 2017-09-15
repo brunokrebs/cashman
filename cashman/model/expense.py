@@ -1,5 +1,7 @@
+# coding=utf-8
+
 import datetime as dt
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
 
 
 class Expense(object):
@@ -16,3 +18,7 @@ class ExpenseSchema(Schema):
     description = fields.Str()
     amount = fields.Number()
     release_date = fields.Date()
+
+    @post_load
+    def make_expense(self, data):
+        return Expense(**data)

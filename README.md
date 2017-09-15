@@ -16,10 +16,10 @@ docker rm cashman
 ```
 
 ```bash
-curl http://localhost:5000/users/
+curl http://localhost:5000/expenses/
 
 curl -X POST -H "Content-Type: application/json" -d '{
-    "title": "JavaScript",
-    "description": "JS developers."
-}' http://localhost:5000/users/
+    "amount": 10.0,
+    "description": "soda"
+}' http://localhost:5000/expenses/
 ```
