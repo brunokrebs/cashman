@@ -8,3 +8,4 @@ python_version = "3.6"
 [packages]
 flask = "*"
 flask-marshmallow = "*"
+marshmallow-jsonapi = "*"

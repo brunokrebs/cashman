@@ -1,18 +1,15 @@
 # coding=utf-8
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from model.expense import Expense, ExpenseSchema
 
 app = Flask(__name__)
 
-users = [{
-    "name": "Bruno",
-    "age": 33
-}, {
-    "name": "José",
-    "age": 35
-}]
+expenses = [Expense("pizza", 50), Expense("Rock Concert", 100)]
 
 
-@app.route('/users/')
-def getUsers():
-    return jsonify(users)
+@app.route('/expenses/')
+def getExpenses():
+    schema = ExpenseSchema(many=True)
+    result = schema.dump(expenses)
+    return jsonify(result.data)

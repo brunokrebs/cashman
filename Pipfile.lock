@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "72a65ce66bdbb610ce8921f695019f01333f78e1077d5130f43b5a0431296d00"
+            "sha256": "fb44f779d39657a400d90435be36853094a5f089453dc3ca0c22697072abaa4b"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -74,6 +74,12 @@
                 "sha256:e3e83f11cade65fc78482a7620f01f82080f032b5fb51756e396635ebc711c75"
             ],
             "version": "==2.13.6"
+        },
+        "marshmallow-jsonapi": {
+            "hashes": [
+                "sha256:75c1f8b4ba82ebf00159805dbf0b5763ed041b70c14b5962ab57e547564efb0a"
+            ],
+            "version": "==0.15.1"
         },
         "six": {
             "hashes": [

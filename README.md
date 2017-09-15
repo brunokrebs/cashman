@@ -14,3 +14,12 @@ docker exec -it cashman bash
 docker stop cashman
 docker rm cashman
 ```
+
+```bash
+curl http://localhost:5000/users/
+
+curl -X POST -H "Content-Type: application/json" -d '{
+    "title": "JavaScript",
+    "description": "JS developers."
+}' http://localhost:5000/users/
+```
