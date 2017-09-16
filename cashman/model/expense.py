@@ -1,24 +1,20 @@
 # coding=utf-8
 
-import datetime as dt
-from marshmallow import Schema, fields, post_load
+from marshmallow import post_load
+
+from .transaction import Transaction, TransactionSchema
+from .transaction_type import TransactionType
 
 
-class Expense(object):
+class Expense(Transaction):
     def __init__(self, description, amount):
-        self.description = description
-        self.amount = amount
-        self.created_at = dt.datetime.now()
+        super(Expense, self).__init__(description, amount, TransactionType.EXPENSE)
 
     def __repr__(self):
         return '<Expense(name={self.description!r})>'.format(self=self)
 
 
-class ExpenseSchema(Schema):
-    description = fields.Str()
-    amount = fields.Number()
-    release_date = fields.Date()
-
+class ExpenseSchema(TransactionSchema):
     @post_load
     def make_expense(self, data):
         return Expense(**data)
