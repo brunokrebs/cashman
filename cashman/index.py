@@ -5,8 +5,8 @@ from operator import add
 
 from flask import Flask, jsonify, request
 
-from model.expense import Expense, ExpenseSchema
-from model.income import Income, IncomeSchema
+from .model.expense import Expense, ExpenseSchema
+from .model.income import Income, IncomeSchema
 
 app = Flask(__name__)
 
@@ -44,8 +44,6 @@ def add_income():
 
 @app.route("/balance/")
 def get_balance():
-    total = (
-        reduce(add, map(lambda income: income.amount, incomes)) -
-        reduce(add, map(lambda expense: expense.amount, expenses))
-    )
+    transactions = expenses + incomes
+    total = sum(transaction.amount for transaction in transactions)
     return jsonify({"total": total})
