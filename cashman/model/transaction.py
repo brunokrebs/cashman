@@ -21,7 +21,3 @@ class TransactionSchema(Schema):
     amount = fields.Number()
     created_at = fields.Date()
     type = fields.Str()
-
-    @post_load
-    def make_transaction(self, data):
-        return TransactionSchema(**data)
