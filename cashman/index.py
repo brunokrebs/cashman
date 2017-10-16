@@ -1,49 +1,50 @@
-# coding=utf-8
-
-from functools import reduce
-from operator import add
-
 from flask import Flask, jsonify, request
 
-from .model.expense import Expense, ExpenseSchema
-from .model.income import Income, IncomeSchema
+from cashman.model.expense import Expense, ExpenseSchema
+from cashman.model.income import Income, IncomeSchema
+from cashman.model.transaction_type import TransactionType
 
 app = Flask(__name__)
 
-expenses = [Expense("pizza", 50), Expense("Rock Concert", 100)]
-incomes = [Income("Salary", 5000), Income("Dividends", 200)]
+transactions = [
+    Income('Salary', 5000),
+    Income('Dividends', 200),
+    Expense('pizza', 50),
+    Expense('Rock Concert', 100)
+]
 
 
-@app.route("/expenses/")
-def get_expenses():
-    schema = ExpenseSchema(many=True)
-    result = schema.dump(expenses)
-    return jsonify(result.data)
-
-
-@app.route("/expenses/", methods=["POST"])
-def add_expense():
-    expense = ExpenseSchema().load(request.get_json())
-    expenses.append(expense.data)
-    return "", 204
-
-
-@app.route("/incomes/")
+@app.route('/incomes')
 def get_incomes():
     schema = IncomeSchema(many=True)
-    result = schema.dump(incomes)
-    return jsonify(result.data)
+    incomes = schema.dump(
+        filter(lambda t: t.type == TransactionType.INCOME, transactions)
+    )
+    return jsonify(incomes.data)
 
 
-@app.route("/incomes/", methods=["POST"])
+@app.route('/incomes', methods=['POST'])
 def add_income():
     income = IncomeSchema().load(request.get_json())
-    incomes.append(income.data)
+    transactions.append(income.data)
     return "", 204
 
 
-@app.route("/balance/")
-def get_balance():
-    transactions = expenses + incomes
-    total = sum(transaction.amount for transaction in transactions)
-    return jsonify({"total": total})
+@app.route('/expenses')
+def get_expenses():
+    schema = ExpenseSchema(many=True)
+    expenses = schema.dump(
+        filter(lambda t: t.type == TransactionType.EXPENSE, transactions)
+    )
+    return jsonify(expenses.data)
+
+
+@app.route('/expenses', methods=['POST'])
+def add_expense():
+    expense = ExpenseSchema().load(request.get_json())
+    transactions.append(expense.data)
+    return "", 204
+
+
+if __name__ == "__main__":
+    app.run()

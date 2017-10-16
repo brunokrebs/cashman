@@ -18,21 +18,21 @@ docker rm cashman
 ## Interacting with Expenses Endpoint
 
 ```bash
-curl http://localhost:5000/expenses/
+curl http://localhost:5000/expenses
 
 curl -X POST -H "Content-Type: application/json" -d '{
     "amount": 10.0,
     "description": "soda"
-}' http://localhost:5000/expenses/
+}' http://localhost:5000/expenses
 ```
 
 ## Interacting with Incomes Endpoint
 
 ```bash
-curl http://localhost:5000/incomes/
+curl http://localhost:5000/incomes
 
 curl -X POST -H "Content-Type: application/json" -d '{
     "amount": 300.0,
     "description": "loan payment"
-}' http://localhost:5000/incomes/
+}' http://localhost:5000/incomes
 ```
