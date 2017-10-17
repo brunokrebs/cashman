@@ -1,48 +1,59 @@
 from flask import Flask, jsonify, request
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
+from cashman.model.base import Base
 from cashman.model.expense import Expense, ExpenseSchema
 from cashman.model.income import Income, IncomeSchema
-from cashman.model.transaction_type import TransactionType
 
 app = Flask(__name__)
+engine = create_engine('postgresql://dbuser:dbpassword@localhost:5432/cashman')
+Session = sessionmaker(bind=engine)
 
-transactions = [
-    Income('Salary', 5000),
-    Income('Dividends', 200),
-    Expense('pizza', 50),
-    Expense('Rock Concert', 100)
-]
+Base.metadata.create_all(engine)
 
 
 @app.route('/incomes')
 def get_incomes():
+    session = Session()
     schema = IncomeSchema(many=True)
-    incomes = schema.dump(
-        filter(lambda t: t.type == TransactionType.INCOME, transactions)
+    incomes = session.query(Income)
+
+    return jsonify(
+        schema.dump(incomes).data
     )
-    return jsonify(incomes.data)
 
 
 @app.route('/incomes', methods=['POST'])
 def add_income():
     income = IncomeSchema().load(request.get_json())
-    transactions.append(income.data)
+
+    session = Session()
+    session.add(income.data)
+    session.commit()
+
     return "", 204
 
 
 @app.route('/expenses')
 def get_expenses():
+    session = Session()
     schema = ExpenseSchema(many=True)
-    expenses = schema.dump(
-        filter(lambda t: t.type == TransactionType.EXPENSE, transactions)
+    expenses = session.query(Expense)
+
+    return jsonify(
+        schema.dump(expenses).data
     )
-    return jsonify(expenses.data)
 
 
 @app.route('/expenses', methods=['POST'])
 def add_expense():
     expense = ExpenseSchema().load(request.get_json())
-    transactions.append(expense.data)
+
+    session = Session()
+    session.add(expense.data)
+    session.commit()
+
     return "", 204
 
 

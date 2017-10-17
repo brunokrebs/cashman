@@ -3,9 +3,20 @@
 import datetime as dt
 
 from marshmallow import Schema, fields
+from sqlalchemy import Column, Integer, String, DateTime, Numeric, Enum
+
+from .base import Base
+from .transaction_type import TransactionType
 
 
-class Transaction(object):
+class Transaction(Base):
+    __tablename__ = 'transactions'
+    id = Column(Integer, primary_key=True)
+    description = Column(String)
+    amount = Column(Numeric)
+    created_at = Column(DateTime)
+    type = Column(Enum(TransactionType))
+
     def __init__(self, description, amount, type):
         self.description = description
         self.amount = amount
