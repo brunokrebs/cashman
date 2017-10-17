@@ -18,6 +18,7 @@ def get_incomes():
     session = Session()
     schema = IncomeSchema(many=True)
     incomes = session.query(Income)
+    session.close()
 
     return jsonify(
         schema.dump(incomes).data
@@ -31,6 +32,7 @@ def add_income():
     session = Session()
     session.add(income.data)
     session.commit()
+    session.close()
 
     return "", 204
 
@@ -40,6 +42,7 @@ def get_expenses():
     session = Session()
     schema = ExpenseSchema(many=True)
     expenses = session.query(Expense)
+    session.close()
 
     return jsonify(
         schema.dump(expenses).data
@@ -53,6 +56,7 @@ def add_expense():
     session = Session()
     session.add(expense.data)
     session.commit()
+    session.close()
 
     return "", 204
 
