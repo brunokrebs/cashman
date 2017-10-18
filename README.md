@@ -29,6 +29,24 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "amount": 300.0,
     "description": "loan payment"
 }' http://localhost:5000/incomes
+
+curl -X POST -H "Content-Type: application/json" -d '{
+    "amount": 300.0,
+    "description": "loan payment",
+    "tags": [
+        "loan",
+        "profit"
+    ]
+}' http://localhost:5000/incomes
+
+curl -X POST -H "Content-Type: application/json" -d '{
+    "amount": 510.0,
+    "description": "lottery ticket",
+    "tags": [
+        "luck",
+        "profit"
+    ]
+}' http://localhost:5000/incomes
 ```
 
 ## Cashman and Docker Container

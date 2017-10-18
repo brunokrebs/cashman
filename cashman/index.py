@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from cashman.model.base import Base
 from cashman.model.expense import Expense, ExpenseSchema
 from cashman.model.income import Income, IncomeSchema
+from cashman.model.tag import Tag
 
 app = Flask(__name__)
 engine = create_engine('postgresql://dbuser:dbpassword@localhost:5432/cashman')
@@ -30,6 +31,7 @@ def add_income():
     income = IncomeSchema().load(request.get_json())
 
     session = Session()
+    session.query(Tag)
     session.add(income.data)
     session.commit()
     session.close()
